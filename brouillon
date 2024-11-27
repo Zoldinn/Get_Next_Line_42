@@ -1,0 +1,52 @@
+- var static : pour savoir ou a fini la ligne : si '\n' est au milieu du buffer read
+--> strjoin pour joindre le morceau de buffer precedent avec le debut de la nouvelle ligne
+- malloc a la taille du BUFFER donner a la compil
+- retourne : la ligne lue (premiere ou suivante), \n compris (ou \0), ligne = ce qu'il y a entre debut, \n et EOF
+- si erreur ou plus rien a lire -> retourne NULL
+- doit pouvoir lire autant sur un fichier que sur l'entree standard (fd 0)
+- doit compiler avec -D BUFFER_SIZE=n
+- Pas besoin de faire une #define BUFFER, il se fait lors de la compil
+- buffer et ligne peut etre taille diff
+- un fd pointe
+- seulement read a utiliser dans ce qu'il faut rendre, pour test avec open et close : main
+
+-- bonus (faire get_..._bonus.c, get_n..._bonus.h, get_b..._utils_bonus.c)
+- 1 seul var statique
+- gerer plusieurs fd, sans perdre le contenu des precedents
+
+
+------------------------------
+------ BROUILLON ---------
+
+--- UTILS.C ---
+FT_PARS :
+- recoit en param un pointeur sur fonction void * et en param
+---
+
+--- GNL.C ----
+CHAR *GNL :
+- declare liste chainee (statique) et initialise avec ft_new_node
+- declare la char * line qui sera renvoie
+
+- appel ft_get_line
+---
+
+T_LIST FT_NEW_NODE :
+- recoit l'adresse du premier ptr vers une liste
+
+- si il est vide, devient le premier
+- sinon, ajoute a la fin le nouveau node
+- le content du nouveau node = a nouveau un read
+- si read / new_node->content == -1 --> return NULL
+---
+
+CHAR *FT_GET_LINE :
+- recoit une liste
+- declare un char *line qui contiendra la ligne
+
+- malloc line, sizeof char, 
+- copie content[i] de chaque listes chainee jusqu'a trouver '\n'
+- ajoute '\0'
+---
+
+
