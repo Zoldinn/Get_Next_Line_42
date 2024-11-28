@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:37:50 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/11/27 17:52:29 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/11/28 16:03:03 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@
 
 typedef struct		s_list
 {
-	char			*buf;
+	char			*content;
 	struct s_list	*next;
 }					t_list;
 
 char	*get_next_line(int fd);
+t_list	*ft_node_line(int fd, t_list **lst);
 
 #endif
