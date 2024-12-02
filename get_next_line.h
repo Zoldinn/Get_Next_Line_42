@@ -14,7 +14,9 @@
 # define GET_NEXT_LINE_H
 
 # include <stdlib.h>
-# include <unist.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <fcntl.h>
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 5
 # endif
@@ -25,6 +27,12 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+void	ft_make_list(t_list **list, int fd);
 char	*get_next_line(int fd);
+t_list	*ft_last_node(t_list *list);
+size_t	ft_size_line(t_list *list);
+char	*ft_get_string(t_list *list);
+int		ft_strchr(char *str);
+void	ft_free_list(t_list **list);
 
 #endif
