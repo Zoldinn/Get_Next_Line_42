@@ -12,10 +12,14 @@
 
 #include "get_next_line.h"
 
+void	
+
 char	*get_next_line(int fd)
 {
-	static t_list	*lst = ft_node_line(fd, &lst);
-	char			*res;
+	static t_list	*list;
+	char			*line;
 
-	
+	if (!list)
+	{
+	}
 }

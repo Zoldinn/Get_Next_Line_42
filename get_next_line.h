@@ -14,16 +14,17 @@
 # define GET_NEXT_LINE_H
 
 # include <stdlib.h>
-# include <fcntl.h>
-# define BUFFER_SIZE 100
+# include <unist.h>
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 5
+# endif
 
 typedef struct		s_list
 {
-	char			*content;
+	char			*string;
 	struct s_list	*next;
 }					t_list;
 
 char	*get_next_line(int fd);
-t_list	*ft_node_line(int fd, t_list **lst);
 
 #endif
