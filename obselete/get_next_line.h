@@ -3,37 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lefoffan <lefoffan@student.42perpignan.fr  +#+  +:+       +#+        */
+/*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/04 10:03:49 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/04 10:05:47 by lefoffan         ###   ########.fr       */
+/*   Created: 2024/11/26 14:37:50 by lefoffan          #+#    #+#             */
+/*   Updated: 2024/11/28 16:03:03 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include <unistd.h>
 # include <stdlib.h>
+# include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
-
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 45
+#  define BUFFER_SIZE 5
 # endif
 
-typedef struct 		s_list
+typedef struct		s_list
 {
 	char			*string;
 	struct s_list	*next;
 }					t_list;
 
-char	*get_next_line(int fd);
-int		ft_strchr(char *str, char needle);
-char	*ft_get_line(t_list *list);
-void	ft_free_list(t_list *list);
-int		ft_make_list(t_list *list, int fd);
 void	ft_cut_list(t_list *list);
-t_list	*ft_get_last(t_list *list);
+void	ft_make_list(t_list **list, int fd);
+char	*get_next_line(int fd);
+t_list	*ft_last_node(t_list *list);
+size_t	ft_size_line(t_list *list);
+char	*ft_get_string(t_list *list);
+int		ft_strchr(char *str);
+void	ft_free_list(t_list *list);
 
 #endif

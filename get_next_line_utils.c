@@ -3,103 +3,102 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
+/*   By: lefoffan <lefoffan@student.42perpignan.fr  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/26 14:38:06 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/11/27 11:31:25 by lefoffan         ###   ########.fr       */
+/*   Created: 2024/12/04 10:55:17 by lefoffan          #+#    #+#             */
+/*   Updated: 2024/12/04 10:58:34 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_list	*ft_last_node(t_list *list)
+void	ft_free_list(t_list *list)
+{
+	t_list	*tmp;
+
+	if (!(list))
+		return ;
+	while (list)
+	{
+		tmp = (list)->next;
+		if ((list)->string)
+			free((list)->string);
+		free(list);
+		list = tmp;
+	}
+}
+
+int	ft_strchr(char *str, char needle)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != needle)
+	{
+		if (str[i] == '\0' && needle != '\0')
+			return (-1);
+		i++;
+	}
+	return (i);
+}
+
+t_list	*ft_get_last(t_list *list)
 {
 	if (!list)
 		return (NULL);
-	while (list->next)
+	while (list->next != NULL)
 		list = list->next;
 	return (list);
 }
 
 /*
- * return the size of the line,
- * passing trough all the strings in the linked list,
- * '\n' included.
- */
-size_t	ft_size_line(t_list *list)
+ * Count the size of the line.
+ * Copy until the '\n' or BUFFER_SIZE or '\0'
+ * Return the size included the '\n' or -1 if error.
+*/
+char	*ft_get_line(t_list *list)
 {
-	int	i;
-	size_t	size;
+	int		i;
+	int		j;
+	int		size;
+	char	*line;
+	t_list	*tmp;
 
+	tmp = list;
 	size = 0;
-	if (!list)
-		return (0);
+	while (tmp)
+	{
+		size += ft_strchr(tmp->string, '\n');
+		tmp = tmp->next;
+	}
+	line = malloc(sizeof(char) * (size + 1));
+	j = 0;
 	while (list)
 	{
 		i = 0;
-		while (list->string[i++] && i < BUFFER_SIZE)
-		{
-			if (list->string[i] == '\n')
-				return (++size);
-			size++;
-		}
+		while (list->string[i] && list->string[i] != '\n' && i < BUFFER_SIZE)
+			line[j++] = list->string[i++];
 		list = list->next;
 	}
-	return (0);
+	line[j] = '\n';
+	line[++j] = '\0';
+	return (line);
 }
 
-/*
-* return the string from beginning (beginning of file or '\n' from the end of the previous line),
-* until '\n'.
-*/
-char	*ft_get_string(t_list *list)
+
+
+// ------------ TESTS ------------- //
+
+/*int	main(void)
 {
-	char	*str;
-	int		i;
-	int		j;
+	t_list	test;
+	t_list	test2;
+	t_list	*last;
 
-	str = malloc(sizeof(char) * (ft_size_line(list) + 1));
-	i = 0;
-	if (!list)
-		return (NULL);
-	while (list)
-	{
-		j = 0;
-		while (list->string[j] && j < BUFFER_SIZE)
-			str[i++] = list->string[j++];
-		list = list->next;
-	}
-	str[i++] = '\n';
-	str[i] = '\0';
-	return (str);
-}
-
-int	ft_strchr(char *str)
-{
-	if (!str)
-		return (0);
-	while (*str)
-	{
-		if (*str == '\n')
-			return (1);
-		str++;
-	}
-	return (0);
-}
-
-/*
- * Must free : the list->string and the list.
-*/
-void	ft_free_list(t_list **list)
-{
-	t_list	*tmp;
-
-	while (*list)
-	{
-		tmp = (*list)->next;
-		free((*list)->string);
-		free(*list);
-		*list = tmp;
-	}
-	*list = NULL;
-}
+	test.string = "hello";
+	test.next = &test2;
+	test2.string = "world";
+	test2.next = NULL;
+	last = ft_get_last(&test);
+	printf("%s\n", last->string);
+}*/
