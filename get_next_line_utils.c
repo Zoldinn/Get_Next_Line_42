@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:55:17 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/05 18:02:48 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/05 19:19:40 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,32 +26,35 @@ void	ft_free_list(t_list *list)
 		free(list);
 		list = tmp;
 	}
-	printf("(ft_free_list() call)\n");
 }
-
+/*
+'-1' = erreur
+0 = pas trouver
+i = trouver avec en bonus la pos
+*/
 int	ft_strchr(char *str, char needle)
 {
 	int	i;
 
 	i = 0;
 	if (!str)
-		return (printf("Function ft_strchr() return an error !\n\t> There'isnt any string !\n"), -1);
+		return (-1);
 	while (str[i] != needle)
 	{
 		if ((str[i] == '\0' && needle != '\0') || i >= BUFFER_SIZE)
-			return (printf("Function ft_strchr() return there's no '\\n'.\n"), 0);
+			return (0);
 		i++;
 	}
-	return (printf("Function ft_strchr() return that there's a '\\n' at index : %d.\n", i), i);
+	return (i);
 }
 
 t_list	*ft_get_last(t_list *list)
 {
 	if (!list)
-		return (printf("Function ft_get_last() return NULL.\n\t> The list was NULL !\n"), NULL);
+		return (NULL);
 	while (list->next != NULL)
 		list = list->next;
-	return (printf("Function ft_get_last() return a node !\n\t-> \"%s\".\n", list->string), list);
+	return (list);
 }
 
 // Return the size ('\n' NOT included) or -1 if error.
@@ -61,14 +64,14 @@ int	ft_size_line(t_list *list)
 
 	i = 0;
 	if (!list)
-		return (printf("Function ft_size_line() return -1.\n\t> list was NULL !\n"), -1);
+		return (-1);
 	while (list)
 	{
 		while (list->string[i] != '\n' && list->string[i])
 			i++;
 		list = list->next;
 	}
-	return (printf("Function ft_size_line() return a size : %d.\n", i), i);
+	return (i);
 }
 
 
@@ -81,7 +84,7 @@ char	*ft_get_line(t_list *list)
 
 	size = ft_size_line(list);
 	if (size < 0)
-		return (printf("Function ft_get_line() can't do a line, ft_size_line() return an error !\n"), NULL);
+		return (NULL);
 	line = malloc(sizeof(char) * (size + 2));
 	j = 0;
 	while (list)
@@ -93,21 +96,7 @@ char	*ft_get_line(t_list *list)
 	}
 	line[j] = '\n';
 	line[++j] = '\0';
-	return (printf("Function ft_get_line() return a line : \n\t> \"%s\"", line), line);
-}
-
-void	ft_print_list(t_list *list)
-{
-	int	i;
-
-	i = 0;
-	printf("\n--------------------\n");
-	while (list)
-	{
-		printf("- node %d : %s\n", i++, list->string);
-		list = list->next;
-	}
-	printf("\n--------------------\n");
+	return (line);
 }
 
 // ------------ TESTS ------------- //
@@ -125,3 +114,17 @@ void	ft_print_list(t_list *list)
 	last = ft_get_last(&test);
 	printf("%s\n", last->string);
 }*/
+
+void	ft_print_list(t_list *list)
+{
+	int	i;
+
+	i = 0;
+	printf("\n--------------------\n");
+	while (list)
+	{
+		printf("- node %d : %s\n", i++, list->string);
+		list = list->next;
+	}
+	printf("\n--------------------\n");
+}
