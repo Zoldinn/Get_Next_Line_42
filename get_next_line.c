@@ -6,15 +6,15 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:02:23 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/05 19:22:09 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/06 14:32:37 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 /*
-- Cut list renvoie la bonne new head. Mais l'ajout de node et extraction n'a pas lieu
---> pb cond recursion makelist
+- pb de size line regler
+--> pb a cut list : size line renvoie 0 car dans le node qu'il contient il a directe un '\n'.
 */
 
 t_list	*ft_cut_list(t_list *list)
@@ -38,13 +38,14 @@ t_list	*ft_cut_list(t_list *list)
 	while (last->string[j] != '\n' && j < BUFFER_SIZE)
 		j++;
 	while (last->string[j] != '\0' && j < BUFFER_SIZE && i < BUFFER_SIZE)
-		new_head->string[i++] = last->string[j++];
+		new_head->string[i++] = last->string[++j];
 	new_head->string[i] = '\0';
 	ft_free_list(list);
-	return (new_head); // Ok
+	printf("new_head-string = \"%s\"\n", new_head->string);
+	return (new_head);
 }
 
-t_list	*ft_make_list(t_list *list, int fd)
+t_list	*ft_make_list(t_list **list, int fd)
 {
 	t_list	*node;
 	t_list	*last;
@@ -54,13 +55,11 @@ t_list	*ft_make_list(t_list *list, int fd)
 	node = malloc(sizeof(t_list));
 	if (!node)
 		return (NULL);
-	if (!list)
-		list = node;
+	last = ft_get_last(*list);
+	if (!last)
+		*list = node;
 	else
-	{
-		last = ft_get_last(list);
 		last->next = node;
-	}
 	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
 		return (NULL);
@@ -70,7 +69,9 @@ t_list	*ft_make_list(t_list *list, int fd)
 	node->next = NULL;
 	if (ft_strchr(node->string, '\n') == 0) // pb ici
 		ft_make_list(list, fd);
-	return (list);
+	else if (ft_strchr(node->string, '\n') == -1)
+		return (printf("Error making list\n"), NULL);
+	return (*list);
 }
 
 char	*get_next_line(int fd)
@@ -78,9 +79,9 @@ char	*get_next_line(int fd)
 	static t_list	*list = NULL;
 	char			*line;
 
-	if (!list || 1 > ft_strchr(list->string, '\n'))
+	if (!list || ft_strchr(list->string, '\n') == 0)
 	{
-		list = ft_make_list(list, fd);
+		list = ft_make_list(&list, fd);
 		if (!list)
 		{
 			ft_free_list(list);
@@ -106,10 +107,11 @@ int	main(void)
 	i = 0;
 	while (++i <= 10)
 	{
+		printf("\n------ GNL, call %d ------\n", i);
 		line = get_next_line(fd);
 		if (!line)
 			return (printf("Gnl did not return a line\n"), 1);
-		printf("line %d : %s\n", i, line);
+		printf("\n-->line %d : <\"%s\">\n\n", i, line);
 		sleep(1);
 	}
 	close(fd);

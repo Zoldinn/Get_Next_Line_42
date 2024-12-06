@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:55:17 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/05 19:19:40 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/06 14:29:25 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,26 @@ t_list	*ft_get_last(t_list *list)
 // Return the size ('\n' NOT included) or -1 if error.
 int	ft_size_line(t_list *list)
 {
-	int		i;
+	int	i;
+	int	size;
 
 	i = 0;
+	size = 0;
 	if (!list)
 		return (-1);
 	while (list)
 	{
+		i = 0;
 		while (list->string[i] != '\n' && list->string[i])
+		{
 			i++;
+			size++;
+		}
+		if (list->string[i] == '\n')
+			break;
 		list = list->next;
 	}
-	return (i);
+	return (size);
 }
 
 
@@ -83,6 +91,7 @@ char	*ft_get_line(t_list *list)
 	char	*line;
 
 	size = ft_size_line(list);
+	printf("size line : %d\n", size);
 	if (size < 0)
 		return (NULL);
 	line = malloc(sizeof(char) * (size + 2));
@@ -120,11 +129,16 @@ void	ft_print_list(t_list *list)
 	int	i;
 
 	i = 0;
-	printf("\n--------------------\n");
+	if (!list)
+	{
+		printf("Can't print, there's no list\n");
+		return ;
+	}
+	printf("\n--- List actually ---\n");
 	while (list)
 	{
-		printf("- node %d : %s\n", i++, list->string);
+		printf("- node %d : <\"%s\">\n", i++, list->string);
 		list = list->next;
 	}
-	printf("\n--------------------\n");
+	printf("---------------\n");
 }
