@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:03:49 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/06 11:08:07 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/09 12:15:23 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #  define BUFFER_SIZE 45
 # endif
 
-typedef struct 		s_list
+typedef struct s_list
 {
 	char			*string;
 	struct s_list	*next;
@@ -31,11 +31,11 @@ typedef struct 		s_list
 char	*get_next_line(int fd);
 int		ft_strchr(char *str, char needle);
 char	*ft_get_line(t_list *list);
-void	ft_free_list(t_list *list);
+void	ft_free_list(t_list **list);
 t_list	*ft_make_list(t_list **list, int fd);
 t_list	*ft_cut_list(t_list *list);
 t_list	*ft_get_last(t_list *list);
-
-void	ft_print_list(t_list *list);
+void	*ft_calloc(size_t count, size_t size);
+int		ft_size_line(t_list *list);
 
 #endif

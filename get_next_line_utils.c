@@ -6,30 +6,32 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:55:17 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/06 14:29:25 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:45:41 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	ft_free_list(t_list *list)
+void	ft_free_list(t_list **list)
 {
 	t_list	*tmp;
 
-	if (!(list))
+	if (!(*list))
 		return ;
-	while (list)
+	while (*list)
 	{
-		tmp = (list)->next;
-		if ((list)->string)
-			free((list)->string);
-		free(list);
-		list = tmp;
+		tmp = (*list)->next;
+		if ((*list)->string)
+			free((*list)->string);
+		free(*list);
+		*list = tmp;
 	}
+	list = NULL;
 }
+
 /*
-'-1' = erreur
-0 = pas trouver
+'-2' = erreur
+-1 = pas trouver
 i = trouver avec en bonus la pos
 */
 int	ft_strchr(char *str, char needle)
@@ -38,11 +40,11 @@ int	ft_strchr(char *str, char needle)
 
 	i = 0;
 	if (!str)
-		return (-1);
+		return (-2);
 	while (str[i] != needle)
 	{
 		if ((str[i] == '\0' && needle != '\0') || i >= BUFFER_SIZE)
-			return (0);
+			return (-1);
 		i++;
 	}
 	return (i);
@@ -76,12 +78,11 @@ int	ft_size_line(t_list *list)
 			size++;
 		}
 		if (list->string[i] == '\n')
-			break;
+			break ;
 		list = list->next;
 	}
 	return (size);
 }
-
 
 char	*ft_get_line(t_list *list)
 {
@@ -91,10 +92,11 @@ char	*ft_get_line(t_list *list)
 	char	*line;
 
 	size = ft_size_line(list);
-	printf("size line : %d\n", size);
 	if (size < 0)
 		return (NULL);
-	line = malloc(sizeof(char) * (size + 2));
+	line = ft_calloc(sizeof(char), (size + 2));
+	if (!line)
+		return (NULL);
 	j = 0;
 	while (list)
 	{
@@ -124,7 +126,7 @@ char	*ft_get_line(t_list *list)
 	printf("%s\n", last->string);
 }*/
 
-void	ft_print_list(t_list *list)
+/* void	ft_print_list(t_list *list)
 {
 	int	i;
 
@@ -142,3 +144,4 @@ void	ft_print_list(t_list *list)
 	}
 	printf("---------------\n");
 }
+ */
