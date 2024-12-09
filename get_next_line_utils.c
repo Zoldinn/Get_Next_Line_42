@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:55:17 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/09 11:45:41 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:46:53 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	ft_size_line(t_list *list)
 			i++;
 			size++;
 		}
-		if (list->string[i] == '\n')
+		if (list->string[i] == '\n' || list->string[i] == '\0')
 			break ;
 		list = list->next;
 	}

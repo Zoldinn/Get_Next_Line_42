@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:03:49 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/09 12:15:23 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/09 15:29:11 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 
 typedef struct s_list
 {
+	int				readed;
 	char			*string;
 	struct s_list	*next;
 }					t_list;
