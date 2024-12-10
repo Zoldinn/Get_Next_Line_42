@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/10 15:57:38 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/10 16:15:43 by lefoffan         ###   ########.fr       */
+/*   Created: 2024/12/10 16:24:49 by lefoffan          #+#    #+#             */
+/*   Updated: 2024/12/10 17:28:54 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,9 @@
 #  define BUFFER_SIZE 45
 # endif
 
-typedef struct s_list
-{
-	char			*string;
-	int				readed;
-	struct s_list	*next;
-}					t_list;
-
 char	*get_next_line(int fd);
-void	ft_free_list(t_list **list);
+char	*ft_substr(char *str, int start, int size);
+char	*ft_strjoin(char *s1, char *S2);
+int		ft_strchr(char *str);
 
 #endif
