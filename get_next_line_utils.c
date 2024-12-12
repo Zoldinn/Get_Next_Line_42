@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 15:59:57 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/12 15:26:54 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:07:23 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,6 @@ int	ft_strchr(char *str)
 	return (-1);
 }
 
-/* return la taille de la ligne (ligne = debut jusqu'a \n inclue).
-parcours la liste en ajoutant BUFFER_SIZE car y'a que au dernier node que on ajoute ft_strchr qui renvoie la pos de '\n'
-*/
 int	ft_size_line(t_list *list)
 {
 	int	size;

@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:07:34 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/12 15:47:31 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:12:04 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ char	*get_next_line(int fd)
 	static t_list	*list = NULL;
 	char			*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) <= 0 ||
-		(list && list->readed <= 0 && ft_strchr(list->string) < 0))
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0
+		|| (list && list->readed <= 0 && ft_strchr(list->string) < 0))
 		return (ft_free_list(&list), NULL);
 	if (!list || (list && ft_strchr(list->string) < 0 && list->readed > 0))
 	{
@@ -113,13 +113,13 @@ char	*get_next_line(int fd)
 
 /*   ---  TESTS  ---   */
 
-int	main(void)
+/* int	main(void)
 {
 	char	*line;
 	int		fd;
 	int		i;
 
-	fd = open("empty", O_RDONLY);
+	fd = open("~/francinette/tests/get_next_line/gnlTester/files/nl", O_RDONLY);
 	i = 0;
 	while (++i <= 15)
 	{
@@ -131,7 +131,7 @@ int	main(void)
 	}
 	close(fd);
 	return (0);
-}
+} */
 
 /* void	ft_print_list(t_list *list)
 {
