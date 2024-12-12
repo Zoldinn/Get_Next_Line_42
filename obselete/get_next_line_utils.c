@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:55:17 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/10 15:39:14 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/11 10:55:15 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ char	*ft_get_line(t_list *list)
 	//printf("j:%d, string[i], %c\n", j, list->string[i]);
 	line[j] = '\n';
 	line[++j] = '\0';
-	return (line);
+	
 }
 
 // ------------ TESTS ------------- //

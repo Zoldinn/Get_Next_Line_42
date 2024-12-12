@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 15:59:57 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/10 17:59:50 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:26:54 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	ft_free_list(t_list **list)
 {
 	t_list	*tmp;
 
+	if (!(*list))
+		return ;
 	while (*list)
 	{
 		tmp = (*list)->next;
@@ -27,11 +29,64 @@ void	ft_free_list(t_list **list)
 	list = NULL;
 }
 
-t_list	*ft_lstlast(t_list *list)
+t_list	*ft_lst_last(t_list *list)
 {
 	if (!list)
 		return (NULL);
 	while (list->next != NULL)
 		list = list->next;
 	return (list);
+}
+
+/* Renvoie i qui est a '\n' ou -1 si pas trouver
+*/
+int	ft_strchr(char *str)
+{
+	int	i;
+
+	if (!str)
+		return (-2);
+	i = 0;
+	while (str[i] && i < BUFFER_SIZE)
+	{
+		if (str[i] == '\n')
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+/* return la taille de la ligne (ligne = debut jusqu'a \n inclue).
+parcours la liste en ajoutant BUFFER_SIZE car y'a que au dernier node que on ajoute ft_strchr qui renvoie la pos de '\n'
+*/
+int	ft_size_line(t_list *list)
+{
+	int	size;
+
+	size = 0;
+	while (list && list->string && ft_strchr(list->string) < 0)
+	{
+		size += BUFFER_SIZE;
+		list = list->next;
+	}
+	if (list && list->string)
+		size += ft_strchr(list->string);
+	return (++size);
+}
+
+char	*ft_sub_str(char *str, int start)
+{
+	char	*sub;
+	int		i;
+
+	if (!str || start < 0)
+		return (NULL);
+	sub = malloc(sizeof(char) * ((BUFFER_SIZE - start) + 1));
+	if (!sub)
+		return (NULL);
+	i = 0;
+	while (str[start])
+		sub[i++] = str[start++];
+	sub[i] = '\0';
+	return (sub);
 }
