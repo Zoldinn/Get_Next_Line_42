@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:07:34 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/12 16:12:04 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/16 19:24:09 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	*ft_calloc(size_t count, size_t size)
 	char	*mem;
 	size_t	i;
 
+	if (count * size == 0)
+		return (malloc(0));
 	mem = malloc(count * size);
 	if (!mem)
 		return (NULL);
@@ -32,15 +34,17 @@ t_list	*ft_cut_list(t_list **list)
 	char	*buf;
 
 	new_head = malloc(sizeof(t_list));
-	if (!new_head)
+	if (!new_head || !ft_lst_last(*list))
 		return (NULL);
 	buf = ft_lst_last(*list)->string;
-	new_head->string = ft_sub_str(buf, ft_strchr(buf) + 1);
-	if (!new_head->string)
+	if (!buf)
 		return (NULL);
+	new_head->string = ft_sub_str(buf, ft_strchr(buf, '\n') + 1);
+	if (!new_head->string)
+		return (free(new_head), NULL);
 	new_head->next = NULL;
 	new_head->readed = ft_lst_last(*list)->readed;
-	return (ft_free_list(list), new_head);
+	return (printf("cut list : %s\n", new_head->string), ft_free_list(list), new_head);
 }
 
 char	*ft_get_line(t_list *list)
@@ -49,6 +53,8 @@ char	*ft_get_line(t_list *list)
 	int		i;
 	int		j;
 
+	if (list && list->string && list->string[0] == '\0')
+		return (NULL);
 	line = ft_calloc(sizeof(char), (ft_size_line(list) + 1));
 	if (!line)
 		return (NULL);
@@ -65,7 +71,7 @@ char	*ft_get_line(t_list *list)
 	if (list && list->string[j] == '\n')
 		line[i] = '\n';
 	line[++i] = '\0';
-	return (line);
+	return (printf("get line : %s\n", line), line);
 }
 
 t_list	*ft_make_list(t_list **list, int fd)
@@ -81,57 +87,69 @@ t_list	*ft_make_list(t_list **list, int fd)
 		ft_lst_last(*list)->next = node;
 	node->string = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
 	if (!node->string)
-		return (free(node), NULL);
+		return (NULL); // pas besoin free car node ratach a list et list est free ds gnl
 	node->readed = read(fd, node->string, BUFFER_SIZE);
-	node->string[BUFFER_SIZE] = '\0';
+	if (node->readed == -1)
+		return (NULL); // idem
+	node->string[node->readed] = '\0';
 	node->next = NULL;
-	if (node->readed > 0 && ft_strchr(node->string) < 0)
+	if (node->readed > 0 && (ft_strchr(node->string, '\n') < 0
+		|| ft_strchr(node->string, '\0') < 0))
 		ft_make_list(list, fd);
-	return (*list);
+	return (printf("make list : %s\n", node->string), *list);
 }
 
-/* Tout les ft_free_list doivent etre fait ici.
-*/
 char	*get_next_line(int fd)
 {
 	static t_list	*list = NULL;
 	char			*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0
-		|| (list && list->readed <= 0 && ft_strchr(list->string) < 0))
+		|| (list && list->readed == 0))
 		return (ft_free_list(&list), NULL);
-	if (!list || (list && ft_strchr(list->string) < 0 && list->readed > 0))
+	if (!list || (list && ft_strchr(list->string, '\n') < 0 && list->readed > 0))
 	{
 		list = ft_make_list(&list, fd);
 		if (!list)
 			return (ft_free_list(&list), NULL);
 	}
 	line = ft_get_line(list);
+	if (!line)
+		return (ft_free_list(&list), NULL);
 	list = ft_cut_list(&list);
+	if (!list)
+		return (free(line), ft_free_list(&list), NULL);
 	return (line);
 }
 
 /*   ---  TESTS  ---   */
-
-/* int	main(void)
+// pb : au lieu de return al ligne avec "0" sans \n il return NULL a get line
+int	main(void)
 {
 	char	*line;
 	int		fd;
-	int		i;
 
-	fd = open("~/francinette/tests/get_next_line/gnlTester/files/nl", O_RDONLY);
-	i = 0;
-	while (++i <= 15)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			return (printf("gnl : nothing returned.\n"), 1);
-		printf("%d| %s\n", i, line);
-		free(line);
-	}
+	fd = open("files/41_with_nl", O_RDONLY);
+	if (fd < 0)
+		printf("fd = %d\n", fd);
+	
+	line = get_next_line(fd);
+	if (!line)
+		return (printf("null\n"), 1);
+	printf("--------------------------------\n");
+	printf("%s", line);
+	free(line);
+
+	line = get_next_line(fd);
+	if (!line)
+		return (printf("null\n"), 1);
+	printf("--------------------------------\n");
+	printf("%s", line);
+	free(line);
 	close(fd);
+
 	return (0);
-} */
+}
 
 /* void	ft_print_list(t_list *list)
 {
