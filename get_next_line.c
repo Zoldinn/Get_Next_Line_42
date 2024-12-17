@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:07:34 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/17 11:26:46 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/17 11:56:42 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@ void	*ft_calloc(size_t count, size_t size)
 	return (mem);
 }
 
-/*
--- PB : return la nouvelle liste avec un \0 quand buffer_size=1
-*/
 t_list	*ft_cut_list(t_list **list)
 {
 	t_list	*new_head;
@@ -44,7 +41,11 @@ t_list	*ft_cut_list(t_list **list)
 		return (NULL);
 	new_head->string = ft_sub_str(buf, ft_strchr(buf, '\n') + 1);
 	if (!new_head->string || (new_head->string && !new_head->string[0]))
-		return (free(new_head->string), free(new_head), ft_free_list(list), NULL);
+	{
+		free(new_head->string);
+		free(new_head);
+		return (ft_free_list(list), NULL);
+	}
 	new_head->next = NULL;
 	new_head->readed = ft_lst_last(*list)->readed;
 	return (ft_free_list(list), new_head);
@@ -90,10 +91,10 @@ t_list	*ft_make_list(t_list **list, int fd)
 		ft_lst_last(*list)->next = node;
 	node->string = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
 	if (!node->string)
-		return (NULL); // pas besoin free car node ratach a list et list est free ds gnl
+		return (NULL);
 	node->readed = read(fd, node->string, BUFFER_SIZE);
 	if (node->readed == -1)
-		return (NULL); // idem
+		return (NULL);
 	node->string[node->readed] = '\0';
 	node->next = NULL;
 	if (node->readed > 0 && (ft_strchr(node->string, '\n') < 0))
@@ -109,7 +110,8 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0
 		|| (list && list->readed <= 0))
 		return (ft_free_list(&list), NULL);
-	if (!list || (list && ft_strchr(list->string, '\n') < 0 && list->readed > 0))
+	if (!list || (list && ft_strchr(list->string, '\n') < 0
+			&& list->readed > 0))
 	{
 		list = ft_make_list(&list, fd);
 		if (!list)
@@ -123,7 +125,7 @@ char	*get_next_line(int fd)
 }
 
 /*   ---  TESTS  ---   */
-// pb : au lieu de return al ligne avec "0" sans \n il return NULL a get line
+
 /* int	main(void)
 {
 	char	*line;

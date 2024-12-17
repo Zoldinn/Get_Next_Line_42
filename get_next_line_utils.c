@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 15:59:57 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/17 11:20:06 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/17 11:55:12 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ t_list	*ft_lst_last(t_list *list)
 	return (list);
 }
 
-/* Renvoie i qui est a '\n' ou -1 si pas trouver
-*/
 int	ft_strchr(char *str, char x)
 {
 	int	i;
@@ -79,7 +77,6 @@ char	*ft_sub_str(char *str, int start)
 	char	*sub;
 	int		i;
 	int		size;
-	
 
 	if (!str || start < 0)
 		return (NULL);
