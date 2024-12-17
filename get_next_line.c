@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:07:34 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/16 19:24:09 by lefoffan         ###   ########.fr       */
+/*   Updated: 2024/12/17 11:26:46 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ void	*ft_calloc(size_t count, size_t size)
 	return (mem);
 }
 
+/*
+-- PB : return la nouvelle liste avec un \0 quand buffer_size=1
+*/
 t_list	*ft_cut_list(t_list **list)
 {
 	t_list	*new_head;
@@ -40,11 +43,11 @@ t_list	*ft_cut_list(t_list **list)
 	if (!buf)
 		return (NULL);
 	new_head->string = ft_sub_str(buf, ft_strchr(buf, '\n') + 1);
-	if (!new_head->string)
-		return (free(new_head), NULL);
+	if (!new_head->string || (new_head->string && !new_head->string[0]))
+		return (free(new_head->string), free(new_head), ft_free_list(list), NULL);
 	new_head->next = NULL;
 	new_head->readed = ft_lst_last(*list)->readed;
-	return (printf("cut list : %s\n", new_head->string), ft_free_list(list), new_head);
+	return (ft_free_list(list), new_head);
 }
 
 char	*ft_get_line(t_list *list)
@@ -71,7 +74,7 @@ char	*ft_get_line(t_list *list)
 	if (list && list->string[j] == '\n')
 		line[i] = '\n';
 	line[++i] = '\0';
-	return (printf("get line : %s\n", line), line);
+	return (line);
 }
 
 t_list	*ft_make_list(t_list **list, int fd)
@@ -93,10 +96,9 @@ t_list	*ft_make_list(t_list **list, int fd)
 		return (NULL); // idem
 	node->string[node->readed] = '\0';
 	node->next = NULL;
-	if (node->readed > 0 && (ft_strchr(node->string, '\n') < 0
-		|| ft_strchr(node->string, '\0') < 0))
+	if (node->readed > 0 && (ft_strchr(node->string, '\n') < 0))
 		ft_make_list(list, fd);
-	return (printf("make list : %s\n", node->string), *list);
+	return (*list);
 }
 
 char	*get_next_line(int fd)
@@ -105,7 +107,7 @@ char	*get_next_line(int fd)
 	char			*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0
-		|| (list && list->readed == 0))
+		|| (list && list->readed <= 0))
 		return (ft_free_list(&list), NULL);
 	if (!list || (list && ft_strchr(list->string, '\n') < 0 && list->readed > 0))
 	{
@@ -117,39 +119,37 @@ char	*get_next_line(int fd)
 	if (!line)
 		return (ft_free_list(&list), NULL);
 	list = ft_cut_list(&list);
-	if (!list)
-		return (free(line), ft_free_list(&list), NULL);
 	return (line);
 }
 
 /*   ---  TESTS  ---   */
 // pb : au lieu de return al ligne avec "0" sans \n il return NULL a get line
-int	main(void)
+/* int	main(void)
 {
 	char	*line;
 	int		fd;
 
-	fd = open("files/41_with_nl", O_RDONLY);
+	fd = open("files/42_with_nl", O_RDONLY);
 	if (fd < 0)
 		printf("fd = %d\n", fd);
 	
+	printf("--------------------------------\n");
 	line = get_next_line(fd);
 	if (!line)
 		return (printf("null\n"), 1);
-	printf("--------------------------------\n");
 	printf("%s", line);
 	free(line);
 
+	printf("--------------------------------\n");
 	line = get_next_line(fd);
 	if (!line)
 		return (printf("null\n"), 1);
-	printf("--------------------------------\n");
 	printf("%s", line);
 	free(line);
 	close(fd);
 
 	return (0);
-}
+} */
 
 /* void	ft_print_list(t_list *list)
 {
