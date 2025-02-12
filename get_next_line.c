@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:07:34 by lefoffan          #+#    #+#             */
-/*   Updated: 2024/12/17 11:56:42 by lefoffan         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:25:57 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ void	*ft_calloc(size_t count, size_t size)
 	return (mem);
 }
 
-t_list	*ft_cut_list(t_list **list)
+t_gnl	*ft_cut_gnl(t_gnl **list)
 {
-	t_list	*new_head;
+	t_gnl	*new_head;
 	char	*buf;
 
-	new_head = malloc(sizeof(t_list));
+	new_head = malloc(sizeof(t_gnl));
 	if (!new_head || !ft_lst_last(*list))
 		return (NULL);
 	buf = ft_lst_last(*list)->string;
@@ -51,7 +51,7 @@ t_list	*ft_cut_list(t_list **list)
 	return (ft_free_list(list), new_head);
 }
 
-char	*ft_get_line(t_list *list)
+char	*ft_get_line(t_gnl *list)
 {
 	char	*line;
 	int		i;
@@ -78,11 +78,11 @@ char	*ft_get_line(t_list *list)
 	return (line);
 }
 
-t_list	*ft_make_list(t_list **list, int fd)
+t_gnl	*ft_make_list(t_gnl **list, int fd)
 {
-	t_list	*node;
+	t_gnl	*node;
 
-	node = malloc(sizeof(t_list));
+	node = malloc(sizeof(t_gnl));
 	if (!node)
 		return (NULL);
 	if (!(*list))
@@ -104,7 +104,7 @@ t_list	*ft_make_list(t_list **list, int fd)
 
 char	*get_next_line(int fd)
 {
-	static t_list	*list = NULL;
+	static t_gnl	*list = NULL;
 	char			*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0
@@ -120,7 +120,7 @@ char	*get_next_line(int fd)
 	line = ft_get_line(list);
 	if (!line)
 		return (ft_free_list(&list), NULL);
-	list = ft_cut_list(&list);
+	list = ft_cut_gnl(&list);
 	return (line);
 }
 
@@ -153,11 +153,11 @@ char	*get_next_line(int fd)
 	return (0);
 } */
 
-/* void	ft_print_list(t_list *list)
+/* void	ft_print_gnl(t_gnl *list)
 {
 	if (!list)
 	{
-		printf("ft_print_list : error.\n");
+		printf("ft_print_gnl : error.\n");
 		return ;
 	}
 	while (list)
