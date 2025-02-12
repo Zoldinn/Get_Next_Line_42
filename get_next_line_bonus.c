@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:07:34 by lefoffan          #+#    #+#             */
-/*   Updated: 2025/02/12 13:25:51 by lefoffan         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:09:07 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_gnl	*ft_cut_gnl(t_gnl **list)
 	buf = ft_lst_last(*list)->string;
 	if (!buf)
 		return (NULL);
-	new_head->string = ft_sub_str(buf, ft_strchr(buf, '\n') + 1);
+	new_head->string = ft_sub_str(buf, ft_gstrchr(buf, '\n') + 1);
 	if (!new_head->string || (new_head->string && !new_head->string[0]))
 	{
 		free(new_head->string);
@@ -97,7 +97,7 @@ t_gnl	*ft_make_list(t_gnl **list, int fd)
 		return (NULL);
 	node->string[node->readed] = '\0';
 	node->next = NULL;
-	if (node->readed > 0 && (ft_strchr(node->string, '\n') < 0))
+	if (node->readed > 0 && (ft_gstrchr(node->string, '\n') < 0))
 		ft_make_list(list, fd);
 	return (*list);
 }
@@ -110,7 +110,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0
 		|| (list[fd] && list[fd]->readed <= 0))
 		return (ft_free_list(&list[fd]), NULL);
-	if (!list[fd] || (list[fd] && ft_strchr(list[fd]->string, '\n') < 0
+	if (!list[fd] || (list[fd] && ft_gstrchr(list[fd]->string, '\n') < 0
 			&& list[fd]->readed > 0))
 	{
 		list[fd] = ft_make_list(&list[fd], fd);

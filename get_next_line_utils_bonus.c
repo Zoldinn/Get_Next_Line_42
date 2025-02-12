@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 15:59:57 by lefoffan          #+#    #+#             */
-/*   Updated: 2025/02/12 13:25:54 by lefoffan         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:09:10 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_gnl	*ft_lst_last(t_gnl *list)
 	return (list);
 }
 
-int	ft_strchr(char *str, char x)
+int	ft_gstrchr(char *str, char x)
 {
 	int	i;
 
@@ -62,13 +62,13 @@ int	ft_size_line(t_gnl *list)
 	int	size;
 
 	size = 0;
-	while (list && list->string && ft_strchr(list->string, '\n') < 0)
+	while (list && list->string && ft_gstrchr(list->string, '\n') < 0)
 	{
 		size += BUFFER_SIZE;
 		list = list->next;
 	}
 	if (list && list->string && list->string[0] != '\0')
-		size += ft_strchr(list->string, '\n');
+		size += ft_gstrchr(list->string, '\n');
 	return (++size);
 }
 
