@@ -6,13 +6,13 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:07:34 by lefoffan          #+#    #+#             */
-/*   Updated: 2025/02/12 14:09:12 by lefoffan         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:29:19 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*ft_calloc(size_t count, size_t size)
+void	*ft_gcalloc(size_t count, size_t size)
 {
 	char	*mem;
 	size_t	i;
@@ -59,7 +59,7 @@ char	*ft_get_line(t_gnl *list)
 
 	if (list && list->string && list->string[0] == '\0')
 		return (NULL);
-	line = ft_calloc(sizeof(char), (ft_size_line(list) + 1));
+	line = ft_gcalloc(sizeof(char), (ft_size_line(list) + 1));
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -89,7 +89,7 @@ t_gnl	*ft_make_list(t_gnl **list, int fd)
 		*list = node;
 	else
 		ft_lst_last(*list)->next = node;
-	node->string = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
+	node->string = ft_gcalloc(sizeof(char), (BUFFER_SIZE + 1));
 	if (!node->string)
 		return (NULL);
 	node->readed = read(fd, node->string, BUFFER_SIZE);

@@ -6,7 +6,7 @@
 /*   By: lefoffan <lefoffan@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 15:57:38 by lefoffan          #+#    #+#             */
-/*   Updated: 2025/02/12 14:12:42 by lefoffan         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:29:21 by lefoffan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,6 @@ int		ft_size_line(t_gnl *list);
 char	*ft_get_line(t_gnl *list);
 t_gnl	*ft_cut_gnl(t_gnl **list);
 char	*ft_sub_str(char *str, int start);
-void	*ft_calloc(size_t count, size_t size);
+void	*ft_gcalloc(size_t count, size_t size);
 
 #endif
